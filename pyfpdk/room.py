@@ -1,3 +1,5 @@
+import svgwrite
+
 from .wall import Wall
 
 class Room():
@@ -6,7 +8,10 @@ class Room():
     # Initializer
     ############################################################################
 
-    def __init__(self, arg1, y=None):
+    def __init__(self, arg1, y=None, name=None):
+        self.drawing = svgwrite.Drawing()
+        self.name = name
+
         if y is not None:
             self.points = [(0,0), (0,y), (arg1,y), (arg1,0)]
         else:
@@ -17,8 +22,9 @@ class Room():
         # the left.
         self.walls = []
         for i in range(len(self.points)-1):
-            self.walls.append(Wall(self.points[i], self.points[i+1]))
-        self.walls.append(Wall(self.points[i+1], self.points[0]))
+            self.walls.append(Wall(self, self.points[i], self.points[i+1]))
+        self.walls.append(Wall(self, self.points[i+1], self.points[0]))
+
 
     ############################################################################
     # Area
@@ -34,3 +40,10 @@ class Room():
             area -= self.points[j][0] * self.points[i][1]
         area = abs(area) / 2.0
         return area
+
+    ############################################################################
+    # SVG
+    ############################################################################
+
+    def write_svg(self):
+        self.drawing.save()

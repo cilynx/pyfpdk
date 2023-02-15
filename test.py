@@ -2,11 +2,6 @@
 
 from pyfpdk import Room
 
-for room in [Room([(0,0), (0,5), (4,4), (5,0)]), Room(10,20)]:
-    print(room)
-    print(room.area)
-    print(room.points)
-    for wall in room.walls:
-        print(wall)
-        print(wall.left, wall.right)
-        print(wall.length)
+room = Room([(0,0), (0,10*12), (8*12,8*12), (10*12,0)])
+room.walls[2].addDoor(left_d=2*12)
+room.write_svg()
